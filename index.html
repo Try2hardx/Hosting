@@ -182,11 +182,13 @@ nav {
   padding: 0 48px;
   height: 64px;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 200;
+  flex-wrap: nowrap;
 }
 
 .nav-logo {
@@ -201,7 +203,34 @@ nav {
   text-decoration: none;
 }
 
-.nav-logo-icon {
+.nav-logo-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  transition: color 0.2s;
+}
+
+.nav-logo-cloud {
+  color: var(--accent-blue-light);
+  transition: color 0.2s;
+}
+
+.nav-logo:hover .nav-logo-cloud {
+  color: #93c5fd;
+}
+
+body.light-theme .nav-logo-text {
+  color: #0d0f1a;
+}
+
+body.light-theme .nav-logo-cloud {
+  color: var(--accent-blue);
+}
+
+body.light-theme .nav-logo:hover .nav-logo-cloud {
+  color: #3b82f6;
+}
   width: 36px;
   height: 36px;
   background: linear-gradient(135deg, var(--accent-blue), #1e40af);
@@ -218,6 +247,9 @@ nav {
   display: flex;
   align-items: center;
   gap: 30px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .nav-home-link {
@@ -239,11 +271,12 @@ nav {
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
   padding: 0;
   transition: color 0.2s;
+  white-space: nowrap;
 }
 
 .nav-dropdown-toggle:hover,
@@ -682,9 +715,9 @@ nav {
 }
 
 .service-card-img-wrap img {
-  width: 65%;
+  width: 80%;
   height: auto;
-  max-height: 55%;
+  max-height: 75%;
   object-fit: contain;
   position: relative;
   z-index: 1;
@@ -1890,12 +1923,12 @@ body.light-theme .locations-section {
   <a class="nav-logo" onclick="goHome()">
     <img id="site-logo" src="icons/logo-dark.png" alt="Axyn.Cloud" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
     <div id="logo-fallback" class="nav-logo-icon" style="display:none;">A</div>
-    Axyn.Cloud
+    <span class="nav-logo-text">Axyn<span class="nav-logo-cloud">.Cloud</span></span>
   </a>
-  <div class="nav-links">
-    <span class="nav-home-link" onclick="goHome()">Home</span>
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-toggle" id="shop-toggle" onclick="toggleShop()">
+  <div class="nav-links" style="display:flex;flex-direction:row;align-items:center;gap:30px;flex-wrap:nowrap;">
+    <span class="nav-home-link" onclick="goHome()" style="white-space:nowrap;">Home</span>
+    <div class="nav-dropdown" style="display:inline-flex;align-items:center;">
+      <button class="nav-dropdown-toggle" id="shop-toggle" onclick="toggleShop()" style="white-space:nowrap;">
         Shop <span class="arrow">▾</span>
       </button>
       <div class="nav-dropdown-menu" id="shop-menu">
@@ -1993,7 +2026,6 @@ body.light-theme .locations-section {
       <div class="service-card" onclick="showPlans('epyc')">
         <div class="service-card-img-wrap">
           <img src="icons/epyc.png" alt="AMD EPYC" onerror="this.style.display='none'">
-          <div class="plans-label">PLANS</div>
         </div>
         <div class="service-card-body">
           <h3>Amd Epyc Plans</h3>
@@ -2005,7 +2037,6 @@ body.light-theme .locations-section {
       <div class="service-card" onclick="showPlans('ryzen')">
         <div class="service-card-img-wrap">
           <img src="icons/ryzen9.png" alt="AMD Ryzen 9" onerror="this.style.display='none'">
-          <div class="plans-label">PLANS</div>
         </div>
         <div class="service-card-body">
           <h3>AMD Ryzen 9 Plans</h3>
@@ -2017,7 +2048,6 @@ body.light-theme .locations-section {
       <div class="service-card" onclick="showPlans('xeon')">
         <div class="service-card-img-wrap">
           <img src="icons/xeon.png" alt="Intel Xeon" onerror="this.style.display='none'">
-          <div class="plans-label">PLANS</div>
         </div>
         <div class="service-card-body">
           <h3>Intel Xeon Plans</h3>
