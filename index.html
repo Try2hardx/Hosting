@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axyn.Cloud - Host your own Servers</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-main: #0d0f1a;
+  --bg-card: #13162a;
+  --bg-nav: #0a0c18;
+  --accent: #7c3aed;
+  --accent-light: #9d5cf7;
+  --accent-blue: #4f6ef7;
+  --accent-blue-light: #6b84ff;
+  --text-main: #e8eaf6;
+  --text-muted: #8890b5;
+  --border: #1e2340;
+}
+
+body.light-theme {
+  --bg-main: #f0f2f8;
+  --bg-card: #ffffff;
+  --bg-nav: #ffffff;
+  --accent: #7c3aed;
+  --accent-light: #9d5cf7;
+  --accent-blue: #4f6ef7;
+  --accent-blue-light: #4058e0;
+  --text-main: #0d0f1a;
+  --text-muted: #5a6080;
+  --border: #d0d4e8;
+}
+
+body.light-theme nav {
+  box-shadow: 0 1px 12px rgba(0,0,0,0.08);
+}
+
+body.light-theme .hero {
+  background: #e8eaf8;
+}
+
+body.light-theme .hero-bg {
+  background: linear-gradient(to right, rgba(232,234,248,0.97) 35%, rgba(232,234,248,0.7) 70%, rgba(232,234,248,0.2) 100%);
+}
+
+body.light-theme .hero-grid-pattern {
+  background-image:
+    linear-gradient(rgba(79,110,247,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,110,247,0.06) 1px, transparent 1px);
+}
+
+body.light-theme .hero-title { color: #0d0f1a; }
+body.light-theme .hero-feat-card { background: rgba(255,255,255,0.85); }
+body.light-theme .nav-dropdown-menu { background: #ffffff; }
+body.light-theme .locale-menu { background: #ffffff; }
+body.light-theme footer { background: #e4e7f2; }
+
+body.light-theme .plans-sidebar,
+body.light-theme .detail-sidebar {
+  background: #e8eaf5;
+  border-right-color: var(--border);
+}
+
+body.light-theme .plans-sidebar h2,
+body.light-theme .detail-sidebar h2 {
+  color: #0d0f1a;
+}
+
+body.light-theme .sidebar-nav a {
+  color: #5a6080;
+}
+
+body.light-theme .sidebar-nav a:hover,
+body.light-theme .sidebar-nav a.active {
+  color: #0d0f1a;
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Exo 2', sans-serif;
+  min-height: 100vh;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.93); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes heroPulse {
+  0%, 100% { opacity: 0.55; }
+  50%       { opacity: 0.75; }
+}
+
+nav {
+  background: var(--bg-nav);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent), #4f6ef7);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 18px;
+  color: #fff;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-home-link {
+  color: var(--accent-blue-light);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.nav-dropdown-toggle:hover,
+.nav-dropdown-toggle.open {
+  color: var(--accent-blue-light);
+}
+
+.nav-dropdown-toggle .arrow {
+  font-size: 11px;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.nav-dropdown-toggle.open .arrow {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 0;
+  background: #12152b;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  min-width: 210px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+  overflow: hidden;
+  z-index: 300;
+}
+
+.nav-dropdown-menu.open {
+  display: block;
+  animation: slideDown 0.18s ease both;
+}
+
+.nav-dropdown-menu a {
+  display: block;
+  padding: 13px 20px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-dropdown-menu a:last-child {
+  border-bottom: none;
+}
+
+.nav-dropdown-menu a:hover {
+  background: rgba(79,110,247,0.1);
+  color: #fff;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.locale-dropdown {
+  position: relative;
+}
+
+.locale-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.locale-toggle:hover,
+.locale-toggle.open {
+  border-color: var(--accent-blue);
+  color: #fff;
+}
+
+.locale-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #12152b;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  min-width: 240px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+  z-index: 300;
+  overflow: hidden;
+}
+
+.locale-menu.open {
+  display: block;
+  animation: slideDown 0.18s ease both;
+}
+
+.locale-section-label {
+  padding: 10px 16px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent-blue-light);
+  text-transform: uppercase;
+}
+
+.locale-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 9px 16px;
+  color: var(--text-muted);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.locale-menu button:hover {
+  background: rgba(79,110,247,0.1);
+  color: #fff;
+}
+
+.locale-menu button.selected {
+  color: var(--accent-blue-light);
+  font-weight: 600;
+}
+
+.locale-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.btn-login {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-login:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue-light);
+}
+
+.btn-register {
+  background: var(--accent-blue);
+  border: none;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-register:hover {
+  background: var(--accent-blue-light);
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.hero {
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: #0a0c18;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(10,12,24,0.97) 35%, rgba(10,12,24,0.55) 70%, rgba(10,12,24,0.2) 100%),
+    linear-gradient(135deg, #0d0f1a 0%, #1a0d2e 50%, #0d1a2e 100%);
+  animation: heroPulse 6s ease-in-out infinite;
+}
+
+.hero-grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.hero-glow {
+  position: absolute;
+  top: -100px;
+  right: 100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero-glow2 {
+  position: absolute;
+  bottom: -80px;
+  left: 200px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(79,110,247,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 72px 60px;
+  flex: 1;
+  max-width: 560px;
+}
+
+.hero-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease both;
+  letter-spacing: -1px;
+}
+
+.hero-title span {
+  color: var(--accent-light);
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  max-width: 420px;
+  animation: fadeUp 0.5s ease 0.08s both;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  animation: fadeUp 0.5s ease 0.14s both;
+}
+
+.btn-get-started {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.btn-get-started:hover {
+  background: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(124,58,237,0.4);
+}
+
+.btn-learn-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.btn-learn-more:hover {
+  color: #fff;
+}
+
+.hero-features {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 72px 60px 72px 0;
+  align-self: center;
+  flex-shrink: 0;
+  animation: fadeUp 0.55s ease 0.1s both;
+}
+
+.hero-feat-card {
+  background: rgba(19,22,42,0.75);
+  border: 1px solid rgba(30,35,64,0.8);
+  border-radius: 12px;
+  padding: 20px 20px 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  backdrop-filter: blur(8px);
+  min-width: 210px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.hero-feat-card:hover {
+  border-color: rgba(124,58,237,0.35);
+  transform: translateY(-2px);
+}
+
+.hero-feat-text h4 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.hero-feat-text p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 160px;
+}
+
+.hero-feat-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  color: var(--accent-light);
+  opacity: 0.85;
+}
+
+.home-services {
+  padding: 56px 60px;
+}
+
+.home-services-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 28px;
+  letter-spacing: 0.5px;
+  animation: fadeUp 0.45s ease both;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  max-width: 1060px;
+}
+
+.service-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+  animation: fadeUp 0.5s ease both;
+}
+
+.service-card:nth-child(1) { animation-delay: 0.05s; }
+.service-card:nth-child(2) { animation-delay: 0.12s; }
+.service-card:nth-child(3) { animation-delay: 0.19s; }
+
+.service-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-blue);
+  box-shadow: 0 8px 32px rgba(79,110,247,0.16);
+}
+
+.service-card-img-wrap {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #1e1b6e 0%, #2d2b8a 60%, #3b1fa0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(79,110,247,0.15) 0%, transparent 70%);
+}
+
+.service-card-img-wrap img {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+
+.service-card-img-wrap .plans-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.service-card-body {
+  padding: 18px 20px;
+}
+
+.service-card-body h3 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.service-card-body p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.btn-view-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--accent-blue);
+  border: none;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-view-all:hover {
+  background: var(--accent-blue-light);
+}
+
+.plans-page {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+.plans-sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: #0f1120;
+  border-right: 1px solid var(--border);
+  padding: 36px 28px;
+  animation: fadeIn 0.3s ease both;
+}
+
+.plans-sidebar h2 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.plans-sidebar p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.sidebar-nav a:hover {
+  color: #fff;
+}
+
+.sidebar-nav a.active {
+  color: #fff;
+  font-weight: 700;
+}
+
+.plans-main {
+  flex: 1;
+  padding: 36px 48px;
+  animation: fadeUp 0.38s ease both;
+}
+
+.order-steps {
+  margin-bottom: 8px;
+}
+
+.step-block {
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease both;
+}
+
+.step-block:nth-child(1) { animation-delay: 0.04s; }
+.step-block:nth-child(2) { animation-delay: 0.1s; }
+
+.step-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-blue-light);
+  margin-bottom: 12px;
+  letter-spacing: 0.3px;
+}
+
+.step-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.step-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 16px;
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.step-option:hover {
+  border-color: var(--accent-blue);
+  color: #fff;
+}
+
+.step-option.selected {
+  border-color: var(--accent-blue);
+  background: rgba(79,110,247,0.12);
+  color: #fff;
+}
+
+.step-option img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border-radius: 3px;
+}
+
+.step-option .flag {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.step-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0 24px;
+  opacity: 0.5;
+  animation: fadeIn 0.4s ease 0.14s both;
+}
+
+.choose-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-blue-light);
+  margin-bottom: 18px;
+  animation: fadeUp 0.4s ease 0.16s both;
+}
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.plan-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+  animation: scaleIn 0.35s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+.plan-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-blue);
+  box-shadow: 0 8px 28px rgba(79,110,247,0.16);
+}
+
+.plan-card-banner {
+  width: 100%;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-card-banner::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 70%;
+  height: 160%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+}
+
+.bronze-banner   { background: linear-gradient(135deg, #cd7f32 0%, #2244cc 60%); }
+.silver-banner   { background: linear-gradient(135deg, #a8a9ad 0%, #2244cc 60%); }
+.gold-banner     { background: linear-gradient(135deg, #ffd700 0%, #2244cc 60%); }
+.diamond-banner  { background: linear-gradient(135deg, #00c6ff 0%, #1a3acc 60%); }
+.platinum-banner { background: linear-gradient(135deg, #b026ff 0%, #2233bb 60%); }
+
+.plan-card-info {
+  padding: 14px 16px 4px;
+}
+
+.plan-card-info h4 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.plan-card-price {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.plan-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 14px;
+}
+
+.btn-view {
+  flex: 1;
+  background: var(--accent-blue);
+  border: none;
+  color: #fff;
+  padding: 9px;
+  border-radius: 7px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-view:hover {
+  background: var(--accent-blue-light);
+}
+
+.btn-cart {
+  width: 36px;
+  height: 36px;
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: border-color 0.2s, color 0.2s;
+  font-size: 15px;
+}
+
+.btn-cart:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue-light);
+}
+
+.detail-page {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+.detail-sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: #0f1120;
+  border-right: 1px solid var(--border);
+  padding: 36px 28px;
+  animation: fadeIn 0.3s ease both;
+}
+
+.detail-sidebar h2 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.detail-sidebar p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.detail-main {
+  flex: 1;
+  padding: 50px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.detail-banner {
+  width: 340px;
+  height: 220px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 32px;
+  animation: scaleIn 0.4s cubic-bezier(0.22,1,0.36,1) 0.05s both;
+}
+
+.detail-banner::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 70%;
+  height: 160%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+}
+
+.detail-plan-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+  animation: fadeUp 0.4s ease 0.1s both;
+}
+
+.detail-price {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent-blue-light);
+  margin-bottom: 18px;
+  animation: fadeUp 0.4s ease 0.14s both;
+}
+
+.detail-location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  animation: fadeUp 0.4s ease 0.18s both;
+}
+
+.badge-uptime {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(79, 110, 247, 0.12);
+  border: 1px solid rgba(79, 110, 247, 0.3);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: var(--accent-blue-light);
+  margin-bottom: 28px;
+  animation: fadeUp 0.4s ease 0.22s both;
+}
+
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  width: 100%;
+  max-width: 620px;
+  margin-bottom: 36px;
+  animation: fadeUp 0.4s ease 0.26s both;
+}
+
+.spec-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 16px;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.spec-card:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-2px);
+}
+
+.spec-card .spec-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-blue-light);
+  margin-bottom: 10px;
+}
+
+.spec-card .spec-value {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.spec-card .spec-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.btn-order-now {
+  background: var(--accent-blue);
+  border: none;
+  color: #fff;
+  padding: 14px 60px;
+  border-radius: 8px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  letter-spacing: 0.5px;
+  animation: fadeUp 0.4s ease 0.3s both;
+}
+
+.btn-order-now:hover {
+  background: var(--accent-blue-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(79,110,247,0.35);
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 30px;
+  transition: border-color 0.2s, color 0.2s;
+  animation: fadeIn 0.3s ease both;
+}
+
+.btn-discord {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #5865F2;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btn-discord:hover {
+  background: #4752c4;
+  transform: translateY(-1px);
+}
+
+.btn-discord svg {
+  flex-shrink: 0;
+}
+
+footer {
+  background: #080a14;
+  border-top: 1px solid var(--border);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+  gap: 48px;
+  padding: 56px 60px 48px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 280px;
+}
+
+.footer-discord-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #5865F2;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 7px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  width: fit-content;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.footer-discord-btn:hover {
+  background: #4752c4;
+  transform: translateY(-1px);
+}
+
+.footer-col h4 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 18px;
+  letter-spacing: 0.3px;
+}
+
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.footer-col ul li a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-col ul li a:hover {
+  color: #fff;
+}
+
+.footer-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.footer-contact-icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(124,58,237,0.15);
+  border: 1px solid rgba(124,58,237,0.3);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-light);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.footer-contact-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.footer-contact-value {
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+.footer-contact-value.coming-soon {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding: 20px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1300px;
+  margin: 0 auto;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+
+  nav {
+    padding: 0 16px;
+    height: 56px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-right {
+    gap: 8px;
+  }
+
+  .locale-toggle {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+
+  #locale-label {
+    display: none;
+  }
+
+  .locale-toggle::after {
+    content: '🌐';
+    font-size: 15px;
+  }
+
+  .locale-menu {
+    min-width: 200px;
+    right: 0;
+  }
+
+  .btn-discord {
+    padding: 7px 10px;
+    font-size: 0;
+  }
+
+  .btn-discord svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero {
+    flex-direction: column;
+    min-height: unset;
+    padding-bottom: 0;
+  }
+
+  .hero-content {
+    padding: 36px 20px 24px;
+    max-width: 100%;
+  }
+
+  .hero-title {
+    font-size: 44px;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+  }
+
+  .hero-features {
+    padding: 0 16px 32px;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    align-self: unset;
+  }
+
+  .hero-feat-card {
+    min-width: unset;
+    padding: 14px 12px;
+  }
+
+  .hero-feat-text h4 {
+    font-size: 13px;
+  }
+
+  .hero-feat-text p {
+    font-size: 11px;
+  }
+
+  .hero-feat-icon {
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .home-services {
+    padding: 32px 16px;
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 0;
+  }
+
+  .plans-page,
+  .detail-page {
+    flex-direction: column;
+  }
+
+  .plans-sidebar,
+  .detail-sidebar {
+    width: 100%;
+    min-width: unset;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 16px;
+  }
+
+  .plans-sidebar p,
+  .detail-sidebar p {
+    display: none;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sidebar-nav a {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .sidebar-nav a.active {
+    border-color: var(--accent-blue);
+    background: rgba(79,110,247,0.1);
+  }
+
+  .plans-main {
+    padding: 20px 16px;
+  }
+
+  .plan-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .step-options {
+    gap: 8px;
+  }
+
+  .step-option {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  .detail-main {
+    padding: 24px 16px;
+  }
+
+  .detail-banner {
+    width: 100%;
+    height: 160px;
+    font-size: 26px;
+  }
+
+  .specs-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .spec-card {
+    padding: 14px 8px;
+  }
+
+  .spec-card .spec-value {
+    font-size: 16px;
+  }
+
+  .spec-card .spec-label {
+    font-size: 10px;
+  }
+
+  .btn-order-now {
+    padding: 12px 32px;
+    font-size: 15px;
+    width: 100%;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 36px 20px 28px;
+  }
+
+  .footer-bottom {
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+
+  .badge-uptime {
+    font-size: 10px;
+    padding: 5px 10px;
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .detail-plan-name {
+    font-size: 22px;
+  }
+
+  .detail-price {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .plan-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-features {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .specs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" onclick="goHome()">
+    <img id="site-logo" src="icons/logo-dark.png" alt="Axyn.Cloud" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
+    <div id="logo-fallback" class="nav-logo-icon" style="display:none;">A</div>
+  </a>
+  <div class="nav-links">
+    <span class="nav-home-link" onclick="goHome()">Home</span>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-toggle" id="shop-toggle" onclick="toggleShop()">
+        Shop <span class="arrow">▾</span>
+      </button>
+      <div class="nav-dropdown-menu" id="shop-menu">
+        <a onclick="closeDropdowns(); showPlans('epyc')">Amd Epyc Plans</a>
+        <a onclick="closeDropdowns(); showPlans('ryzen')">AMD Ryzen 9 Plans</a>
+        <a onclick="closeDropdowns(); showPlans('xeon')">Intel Xeon Plans</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="locale-dropdown">
+      <button class="locale-toggle" id="locale-toggle" onclick="toggleLocale()">
+        <span id="locale-label">EN | US Dollar</span> <span style="font-size:11px;">▾</span>
+      </button>
+      <div class="locale-menu" id="locale-menu">
+        <div class="locale-section-label">Language</div>
+        <button onclick="setLang('EN')" id="lang-EN" class="selected">🇺🇸 English</button>
+        <button onclick="setLang('FR')" id="lang-FR">🇫🇷 French</button>
+        <button onclick="setLang('DE')" id="lang-DE">🇩🇪 German</button>
+        <button onclick="setLang('ES')" id="lang-ES">🇪🇸 Spanish</button>
+        <button onclick="setLang('PT')" id="lang-PT">🇧🇷 Portuguese</button>
+        <div class="locale-divider"></div>
+        <div class="locale-section-label">Currency</div>
+        <button onclick="setCurrency('USD')" id="cur-USD" class="selected">💵 US Dollar (USD)</button>
+        <button onclick="setCurrency('INR')" id="cur-INR">🇮🇳 Indian Rupee (INR)</button>
+        <button onclick="setCurrency('EUR')" id="cur-EUR">💶 Euro (EUR)</button>
+        <button onclick="setCurrency('GBP')" id="cur-GBP">💷 British Pound (GBP)</button>
+        <button onclick="setCurrency('CAD')" id="cur-CAD">🍁 Canadian Dollar (CAD)</button>
+        <button onclick="setCurrency('AUD')" id="cur-AUD">🦘 Australian Dollar (AUD)</button>
+      </div>
+    </div>
+    <button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="width:36px;height:36px;background:transparent;border:1px solid var(--border);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='var(--accent-blue)';this.style.color='#fff'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">
+      <svg id="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg id="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <a href="https://discord.gg/bqsYCzMqef" target="_blank" class="btn-discord">
+      <svg width="18" height="18" viewBox="0 0 127.14 96.36" fill="currentColor"><path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.14zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/></svg>
+      Discord
+    </a>
+  </div>
+</nav>
+
+<div id="page-home" class="page active">
+
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-pattern"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+
+    <div class="hero-content">
+      <h1 class="hero-title">Host your own<br><span>Servers</span></h1>
+      <p class="hero-sub">Experience lightning-fast performance, unbeatable reliability, and 24/7 support for all your favorite games.</p>
+      <div class="hero-actions">
+        <button class="btn-get-started" onclick="showPlans('epyc')">Get started →</button>
+      </div>
+    </div>
+
+    <div class="hero-features">
+      <div class="hero-feat-card">
+        <div class="hero-feat-text">
+          <h4>Instant Setup</h4>
+          <p>Get your server running in under 60 seconds</p>
+        </div>
+        <div class="hero-feat-icon">⊟</div>
+      </div>
+      <div class="hero-feat-card">
+        <div class="hero-feat-text">
+          <h4>DDoS Protection</h4>
+          <p>Enterprise-grade security for your servers</p>
+        </div>
+        <div class="hero-feat-icon">⛨</div>
+      </div>
+      <div class="hero-feat-card">
+        <div class="hero-feat-text">
+          <h4>99.9% Uptime</h4>
+          <p>Reliable hosting with guaranteed availability</p>
+        </div>
+        <div class="hero-feat-icon">◷</div>
+      </div>
+      <div class="hero-feat-card">
+        <div class="hero-feat-text">
+          <h4>24/7 Support</h4>
+          <p>Expert help whenever you need it</p>
+        </div>
+        <div class="hero-feat-icon">⚇</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-services">
+    <div class="home-services-title">Services</div>
+    <div class="service-grid">
+
+      <div class="service-card" onclick="showPlans('epyc')">
+        <div class="service-card-img-wrap">
+          <img src="icons/epyc.png" alt="AMD EPYC" onerror="this.style.display='none'">
+          <div class="plans-label">PLANS</div>
+        </div>
+        <div class="service-card-body">
+          <h3>Amd Epyc Plans</h3>
+          <p>These are High Performance paid plans with Low Latency, 99.9% Uptime &amp; 24/7 Support. Pricing starts from $0.45/GB. All plans have AMD Epyc 7763 Processor.</p>
+          <button class="btn-view-all">View All →</button>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="showPlans('ryzen')">
+        <div class="service-card-img-wrap">
+          <img src="icons/ryzen9.png" alt="AMD Ryzen 9" onerror="this.style.display='none'">
+          <div class="plans-label">PLANS</div>
+        </div>
+        <div class="service-card-body">
+          <h3>AMD Ryzen 9 Plans</h3>
+          <p>These are High Performance paid plans with Low Latency, 99.9% Uptime &amp; 24/7 Support. Pricing starts from $0.65/GB. All plans have AMD Ryzen 9 Processor.</p>
+          <button class="btn-view-all">View All →</button>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="showPlans('xeon')">
+        <div class="service-card-img-wrap">
+          <img src="icons/xeon.png" alt="Intel Xeon" onerror="this.style.display='none'">
+          <div class="plans-label">PLANS</div>
+        </div>
+        <div class="service-card-body">
+          <h3>Intel Xeon Plans</h3>
+          <p>These are High Performance paid plans with Low Latency, 99.9% Uptime &amp; 24/7 Support. Pricing starts from $0.35/GB. All plans have Intel Xeon E5 2673 Processor.</p>
+          <button class="btn-view-all">View All →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div id="page-plans" class="page">
+  <div class="plans-page">
+    <div class="plans-sidebar">
+      <h2 id="sidebar-title">Plans</h2>
+      <p id="sidebar-desc">High Performance plans.</p>
+      <div class="sidebar-nav">
+        <a onclick="showPlans('epyc')" id="snav-epyc">Amd Epyc Plans</a>
+        <a onclick="showPlans('ryzen')" id="snav-ryzen">AMD Ryzen 9 Plans</a>
+        <a onclick="showPlans('xeon')" id="snav-xeon">Intel Xeon Plans</a>
+      </div>
+    </div>
+    <div class="plans-main">
+      <div class="order-steps">
+
+        <div class="step-block">
+          <div class="step-label">1. Plan Type</div>
+          <div class="step-options">
+            <button class="step-option selected" id="pt-epyc" onclick="selectPlanType('epyc')">
+              <img src="icons/epyc.png" onerror="this.style.display='none'"> AMD EPYC
+            </button>
+            <button class="step-option" id="pt-ryzen" onclick="selectPlanType('ryzen')">
+              <img src="icons/ryzen9.png" onerror="this.style.display='none'"> AMD Ryzen 9
+            </button>
+            <button class="step-option" id="pt-xeon" onclick="selectPlanType('xeon')">
+              <img src="icons/xeon.png" onerror="this.style.display='none'"> Intel Xeon
+            </button>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <div class="step-label">2. Location</div>
+          <div class="step-options">
+            <button class="step-option selected" id="loc-in" onclick="selectLocation('in')">
+              <span class="flag">🇮🇳</span> India
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="step-divider"></div>
+      <div class="choose-label">3. Choose Plan</div>
+      <div class="plan-grid" id="plan-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-detail" class="page">
+  <div class="detail-page">
+    <div class="detail-sidebar">
+      <h2 id="detail-sidebar-title">Plans</h2>
+      <p id="detail-sidebar-desc">High Performance plans.</p>
+      <div class="sidebar-nav">
+        <a onclick="showPlans('epyc')" id="dsnav-epyc">Amd Epyc Plans</a>
+        <a onclick="showPlans('ryzen')" id="dsnav-ryzen">AMD Ryzen 9 Plans</a>
+        <a onclick="showPlans('xeon')" id="dsnav-xeon">Intel Xeon Plans</a>
+      </div>
+    </div>
+    <div class="detail-main" id="detail-main"></div>
+  </div>
+</div>
+
+<script>
+var orderLinks = {
+  epyc: {
+    bronze:   'https://billing.axyn.cloud/products/amd-epyc-plans/bronze',
+    silver:   'https://billing.axyn.cloud/products/amd-epyc-plans/silver',
+    gold:     'https://billing.axyn.cloud/products/amd-epyc-plans/gold',
+    diamond:  'https://billing.axyn.cloud/products/amd-epyc-plans/diamond',
+    platinum: 'https://billing.axyn.cloud/products/amd-epyc-plans/platinum'
+  },
+  ryzen: {
+    bronze:   'https://billing.axyn.cloud/products/amd-ryzen-9-plans/bronze-2',
+    silver:   'https://billing.axyn.cloud/products/amd-ryzen-9-plans/silver-1',
+    gold:     'https://billing.axyn.cloud/products/amd-ryzen-9-plans/gold-1',
+    diamond:  'https://billing.axyn.cloud/products/amd-ryzen-9-plans/diamond-1',
+    platinum: 'https://billing.axyn.cloud/products/amd-ryzen-9-plans/platinum-1'
+  },
+  xeon: {
+    bronze:   'https://billing.axyn.cloud/products/intel-xeon-plans/bronze-3',
+    silver:   'https://billing.axyn.cloud/products/intel-xeon-plans/silver-3',
+    gold:     'https://billing.axyn.cloud/products/intel-xeon-plans/gold-3',
+    diamond:  'https://billing.axyn.cloud/products/intel-xeon-plans/diamond-3',
+    platinum: 'https://billing.axyn.cloud/products/intel-xeon-plans/platinum-3'
+  }
+};
+
+var currentLang     = 'EN';
+var currentCurrency = 'USD';
+var currentCategory = 'epyc';
+var currentLocation = 'in';
+var currentPage     = 'page-home';
+var currentDetailCat  = 'epyc';
+var currentDetailTier = 'bronze';
+
+var currencyNames   = { USD: 'US Dollar', INR: 'Indian Rupee', EUR: 'Euro', GBP: 'British Pound', CAD: 'Canadian Dollar', AUD: 'Australian Dollar' };
+var currencyRates   = { USD: 1, INR: 83.5, EUR: 0.92, GBP: 0.79, CAD: 1.36, AUD: 1.53 };
+var currencySymbols = { USD: '$', INR: '₹', EUR: '€', GBP: '£', CAD: 'CA$', AUD: 'A$' };
+
+var locationNames = {
+  in: { flag: '🇮🇳', label: 'India' }
+};
+
+var basePrices = {
+  epyc:  { bronze: 1.80, silver: 2.70, gold: 3.60, diamond: 5.40, platinum: 7.20 },
+  ryzen: { bronze: 2.60, silver: 3.90, gold: 5.20, diamond: 7.80, platinum: 10.40 },
+  xeon:  { bronze: 1.20, silver: 1.80, gold: 2.40, diamond: 3.60, platinum: 4.80 }
+};
+
+var pricing = {
+  epyc: {
+    title: 'Amd Epyc Plans',
+    desc: 'High Performance plans with Low Latency, 99.9% Uptime & 24/7 Support. AMD Epyc 7763 Processor.',
+    plans: [
+      { name: 'Bronze',   tier: 'bronze'   },
+      { name: 'Silver',   tier: 'silver'   },
+      { name: 'Gold',     tier: 'gold'     },
+      { name: 'Diamond',  tier: 'diamond'  },
+      { name: 'Platinum', tier: 'platinum' }
+    ]
+  },
+  ryzen: {
+    title: 'AMD Ryzen 9 Plans',
+    desc: 'High Performance plans with Low Latency, 99.9% Uptime & 24/7 Support. AMD Ryzen 9 Processor.',
+    plans: [
+      { name: 'Bronze',   tier: 'bronze'   },
+      { name: 'Silver',   tier: 'silver'   },
+      { name: 'Gold',     tier: 'gold'     },
+      { name: 'Diamond',  tier: 'diamond'  },
+      { name: 'Platinum', tier: 'platinum' }
+    ]
+  },
+  xeon: {
+    title: 'Intel Xeon Plans',
+    desc: 'High Performance plans with Low Latency, 99.9% Uptime & 24/7 Support. Intel Xeon E5 2673 Processor.',
+    plans: [
+      { name: 'Bronze',   tier: 'bronze'   },
+      { name: 'Silver',   tier: 'silver'   },
+      { name: 'Gold',     tier: 'gold'     },
+      { name: 'Diamond',  tier: 'diamond'  },
+      { name: 'Platinum', tier: 'platinum' }
+    ]
+  }
+};
+
+var specs = {
+  bronze:   { ram: '4GB',  disk: '8GB',  cpu: '2v Core' },
+  silver:   { ram: '6GB',  disk: '15GB', cpu: '4v Core' },
+  gold:     { ram: '8GB',  disk: '25GB', cpu: '4v Core' },
+  diamond:  { ram: '12GB', disk: '30GB', cpu: '6v Core' },
+  platinum: { ram: '16GB', disk: '40GB', cpu: '8v Core' }
+};
+
+function convertPrice(baseUSD) {
+  var rate = currencyRates[currentCurrency];
+  var sym  = currencySymbols[currentCurrency];
+  var val  = baseUSD * rate;
+  if (currentCurrency === 'INR') {
+    return sym + Math.round(val).toLocaleString('en-IN');
+  }
+  return sym + val.toFixed(2);
+}
+
+function toggleShop() {
+  var m = document.getElementById('shop-menu');
+  var t = document.getElementById('shop-toggle');
+  document.getElementById('locale-menu').classList.remove('open');
+  document.getElementById('locale-toggle').classList.remove('open');
+  m.classList.toggle('open');
+  t.classList.toggle('open');
+}
+
+function toggleLocale() {
+  var m = document.getElementById('locale-menu');
+  var t = document.getElementById('locale-toggle');
+  document.getElementById('shop-menu').classList.remove('open');
+  document.getElementById('shop-toggle').classList.remove('open');
+  m.classList.toggle('open');
+  t.classList.toggle('open');
+}
+
+function closeDropdowns() {
+  document.getElementById('shop-menu').classList.remove('open');
+  document.getElementById('shop-toggle').classList.remove('open');
+  document.getElementById('locale-menu').classList.remove('open');
+  document.getElementById('locale-toggle').classList.remove('open');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-dropdown') && !e.target.closest('.locale-dropdown')) {
+    closeDropdowns();
+  }
+});
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('[id^="lang-"]').forEach(function(el) { el.classList.remove('selected'); });
+  document.getElementById('lang-' + lang).classList.add('selected');
+  updateLocaleLabel();
+  closeDropdowns();
+  refreshCurrentPage();
+}
+
+function setCurrency(cur) {
+  currentCurrency = cur;
+  document.querySelectorAll('[id^="cur-"]').forEach(function(el) { el.classList.remove('selected'); });
+  document.getElementById('cur-' + cur).classList.add('selected');
+  updateLocaleLabel();
+  closeDropdowns();
+  refreshCurrentPage();
+}
+
+function updateLocaleLabel() {
+  document.getElementById('locale-label').textContent = currentLang + ' | ' + currencyNames[currentCurrency];
+}
+
+function refreshCurrentPage() {
+  if (currentPage === 'page-plans') {
+    renderPlanGrid(currentCategory);
+  } else if (currentPage === 'page-detail') {
+    renderDetailPage(currentDetailCat, currentDetailTier);
+  }
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  currentPage = id;
+}
+
+function goHome() {
+  showPage('page-home');
+}
+
+function selectPlanType(cat) {
+  currentCategory = cat;
+  document.querySelectorAll('[id^="pt-"]').forEach(function(el) { el.classList.remove('selected'); });
+  document.getElementById('pt-' + cat).classList.add('selected');
+  updateSidebarActive(cat);
+  document.getElementById('sidebar-title').textContent = pricing[cat].title;
+  document.getElementById('sidebar-desc').textContent  = pricing[cat].desc;
+  renderPlanGrid(cat);
+}
+
+function selectLocation(loc) {
+  currentLocation = loc;
+  document.querySelectorAll('[id^="loc-"]').forEach(function(el) { el.classList.remove('selected'); });
+  document.getElementById('loc-' + loc).classList.add('selected');
+}
+
+function updateSidebarActive(cat) {
+  ['epyc','ryzen','xeon'].forEach(function(k) {
+    var a = document.getElementById('snav-' + k);
+    var b = document.getElementById('dsnav-' + k);
+    if (a) a.classList.toggle('active', k === cat);
+    if (b) b.classList.toggle('active', k === cat);
+  });
+}
+
+function renderPlanGrid(cat) {
+  var data = pricing[cat];
+  var grid = document.getElementById('plan-grid');
+  grid.innerHTML = '';
+  data.plans.forEach(function(plan, i) {
+    var price = convertPrice(basePrices[cat][plan.tier]);
+    var card  = document.createElement('div');
+    card.className = 'plan-card';
+    card.style.animationDelay = (i * 0.055) + 's';
+    card.innerHTML =
+      '<div class="plan-card-banner ' + plan.tier + '-banner">' + plan.name.toUpperCase() + ' PLAN</div>' +
+      '<div class="plan-card-info">' +
+        '<h4>' + plan.name + '</h4>' +
+        '<div class="plan-card-price">' + price + ' / mo</div>' +
+      '</div>' +
+      '<div class="plan-card-actions">' +
+        '<button class="btn-view" onclick="event.stopPropagation(); showDetail(\'' + cat + '\',\'' + plan.tier + '\')">View</button>' +
+        '<button class="btn-cart" title="Add to cart">🛒</button>' +
+      '</div>';
+    card.onclick = function() { showDetail(cat, plan.tier); };
+    grid.appendChild(card);
+  });
+}
+
+function showPlans(cat) {
+  currentCategory = cat;
+  var data = pricing[cat];
+  document.getElementById('sidebar-title').textContent = data.title;
+  document.getElementById('sidebar-desc').textContent  = data.desc;
+  updateSidebarActive(cat);
+
+  document.querySelectorAll('[id^="pt-"]').forEach(function(el) { el.classList.remove('selected'); });
+  var ptEl = document.getElementById('pt-' + cat);
+  if (ptEl) ptEl.classList.add('selected');
+
+  renderPlanGrid(cat);
+  showPage('page-plans');
+}
+
+function renderDetailPage(cat, tier) {
+  var data = pricing[cat];
+  var plan = null;
+  for (var i = 0; i < data.plans.length; i++) {
+    if (data.plans[i].tier === tier) { plan = data.plans[i]; break; }
+  }
+  if (!plan) return;
+
+  var sp    = specs[tier];
+  var price = convertPrice(basePrices[cat][tier]);
+  var loc   = locationNames[currentLocation];
+
+  document.getElementById('detail-sidebar-title').textContent = data.title;
+  document.getElementById('detail-sidebar-desc').textContent  = data.desc;
+  updateSidebarActive(cat);
+
+  var main = document.getElementById('detail-main');
+  main.innerHTML =
+    '<button class="btn-back" onclick="showPlans(\'' + cat + '\')">← Back</button>' +
+    '<div class="detail-banner ' + tier + '-banner">' + plan.name.toUpperCase() + ' PLAN</div>' +
+    '<div class="detail-plan-name">' + plan.name + ' Plan</div>' +
+    '<div class="detail-price">' + price + ' / month</div>' +
+    '<div class="detail-location-badge">' + loc.flag + ' &nbsp;' + loc.label + '</div>' +
+    '<div class="badge-uptime">✓ 99.9% Uptime &nbsp;|&nbsp; 24/7 Support &nbsp;|&nbsp; Low Latency &nbsp;|&nbsp; DDoS Protection</div>' +
+    '<div class="specs-grid">' +
+      '<div class="spec-card"><div class="spec-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div><div class="spec-value">' + sp.ram + '</div><div class="spec-label">RAM</div></div>' +
+      '<div class="spec-card"><div class="spec-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div><div class="spec-value">' + sp.disk + '</div><div class="spec-label">NVMe Storage</div></div>' +
+      '<div class="spec-card"><div class="spec-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div><div class="spec-value">' + sp.cpu + '</div><div class="spec-label">CPU Cores</div></div>' +
+    '</div>' +
+    '<button class="btn-order-now" onclick="window.open(orderLinks[\'' + cat + '\'][\'' + tier + '\'], \'_blank\')">Order Now</button>';
+}
+
+function showDetail(cat, tier) {
+  currentDetailCat  = cat;
+  currentDetailTier = tier;
+  renderDetailPage(cat, tier);
+  showPage('page-detail');
+}
+
+var isDarkTheme = true;
+
+function toggleTheme() {
+  isDarkTheme = !isDarkTheme;
+  var logo       = document.getElementById('site-logo');
+  var footerLogo = document.getElementById('footer-logo');
+  var moon = document.getElementById('theme-icon-moon');
+  var sun  = document.getElementById('theme-icon-sun');
+  if (isDarkTheme) {
+    document.body.classList.remove('light-theme');
+    moon.style.display = '';
+    sun.style.display  = 'none';
+    if (logo)       logo.src       = 'icons/logo-dark.png';
+    if (footerLogo) footerLogo.src = 'icons/logo-dark.png';
+  } else {
+    document.body.classList.add('light-theme');
+    moon.style.display = 'none';
+    sun.style.display  = '';
+    if (logo)       logo.src       = 'icons/logo-light.png';
+    if (footerLogo) footerLogo.src = 'icons/logo-light.png';
+  }
+}
+</script>
+
+<footer>
+  <div class="footer-top">
+
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img id="footer-logo" src="icons/logo-dark.png" alt="Axyn.Cloud" style="height:40px;width:auto;object-fit:contain;" onerror="this.style.display='none';document.getElementById('footer-logo-fallback').style.display='flex';">
+        <div id="footer-logo-fallback" class="nav-logo-icon" style="display:none;width:42px;height:42px;font-size:20px;">A</div>
+      </div>
+      <p class="footer-tagline">High-performance hosting powered by reliable hardware, secure infrastructure, and 24/7 support.</p>
+      <a href="https://discord.gg/bqsYCzMqef" target="_blank" class="footer-discord-btn">
+        <svg width="16" height="16" viewBox="0 0 127.14 96.36" fill="currentColor"><path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.14zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/></svg>
+        Join our Discord
+      </a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a onclick="goHome()">Home</a></li>
+        <li><a href="https://discord.gg/bqsYCzMqef" target="_blank">Discord</a></li>
+        <li><a onclick="showPlans('epyc')">AMD EPYC Hosting</a></li>
+        <li><a onclick="showPlans('ryzen')">AMD Ryzen 9 Hosting</a></li>
+        <li><a onclick="showPlans('xeon')">Intel Xeon Hosting</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Refund Policy</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <div class="footer-contact-list">
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </div>
+          <div>
+            <div class="footer-contact-label">EMAIL</div>
+            <div class="footer-contact-value coming-soon">Coming Soon</div>
+          </div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.55 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l.77-.77a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="footer-contact-label">PHONE</div>
+            <div class="footer-contact-value coming-soon">Coming Soon</div>
+          </div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div>
+            <div class="footer-contact-label">BILLING PANEL</div>
+            <a href="https://billing.axyn.cloud/" target="_blank" class="footer-contact-value" style="color:var(--accent-blue-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--accent-blue-light)'">billing.axyn.cloud</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Axyn.Cloud. All rights reserved.</span>
+    <span>Powered by reliable hardware &amp; secure infrastructure.</span>
+  </div>
+</footer>
+
+
+</body>
+</html>
